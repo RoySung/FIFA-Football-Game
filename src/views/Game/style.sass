@@ -1,0 +1,50 @@
+@keyframes spin
+  100%
+    transform: rotate(360deg)
+
+@keyframes bigger
+  30%
+    transform: scale(1.5)
+  50%
+    transform: scale(2)
+  80%
+    transform: scale(1.5)
+    opacity: 0.8
+  100%
+    transform: scale(1)
+    opacity: 0.5
+
+.game-wrap
+  width: 100vw
+  height: 100vh
+  background-position: center center
+  background-image: url(https://images.pexels.com/photos/399187/pexels-photo-399187.jpeg?cs=srgb&dl=evening-field-football-field-399187.jpg&fm=jpg)
+  .score-wrap
+    color: #fff
+    .score-label
+      font-size: 50px
+      font-weight: bold
+    .score-text
+      font-size: 35px
+  .football
+    --x: 50%
+    --y: 70%
+    --size: 0.1
+    position: absolute
+    left: var(--x)
+    top: var(--y)
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100px
+    height: 100px
+    filter: brightness(var(--size))
+    transition: all .5s ease
+    animation: spin .4s ease-in-out infinite
+    cursor: pointer
+    img
+      width: 100%
+      transform: scale(var(--size))
+      transition: all .3s ease
+      &.scored
+        animation: bigger .3s ease-in-out forwards
