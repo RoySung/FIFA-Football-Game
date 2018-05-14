@@ -1,5 +1,7 @@
 {
-  "name": "Football-Game",
+  "name": "FIFA-Football-Game",
+  "description": "Project for the FIFA",
+  "author": "Roy Cai <roysunghan@gmail.com>",
   "version": "0.1.0",
   "private": true,
   "scripts": {
