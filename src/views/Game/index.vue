@@ -20,6 +20,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { BallOption } from '@/types'
 import { EASY, HARD } from '@/constants/level'
+import { randomWithRange } from '@/util'
 import levelConfig from './levelConfig'
 import Ball from './Ball.vue'
 
@@ -38,16 +39,11 @@ export default class Game extends Vue {
     console.log('init')
   }
 
-  public randomWithRange(min: number, max: number) {
-    if (min < 0) { min = 0 }
-    if (max > 100) { max = 100 }
-    return Math.floor(Math.random() * (max - min) + min)
-  }
 
   public setRandomBall(duration: number = 1, pointDuration: number = 1.5) {
     const position = {
-      x: this.randomWithRange(10, 90),
-      y: this.randomWithRange(10, 90),
+      x: randomWithRange(10, 90),
+      y: randomWithRange(10, 90),
     }
     this.ballOption = {
       startTS: new Date().getTime(),
