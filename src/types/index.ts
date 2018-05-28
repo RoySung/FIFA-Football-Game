@@ -14,7 +14,3 @@ export interface Level {
   duration: number
   pointDuration: number
 }
-
-export interface Levels {
-  [name: string]: Level
-}
