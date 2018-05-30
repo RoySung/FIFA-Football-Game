@@ -56,6 +56,7 @@ export default class Ball extends Vue {
       this.isPoint = false
       this.isScored = false
       this.isInit = false
+      clearTimeout(this.timer)
       turnPoint.y = turnPoint.y < 0 ? 0 : turnPoint.y
 
       // set ball to start position
