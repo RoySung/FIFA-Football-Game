@@ -1,6 +1,8 @@
 <template>
   <div class="game-wrap">
     <div class="score-wrap">
+      <div class="score-label">Highest Score</div>
+      <div class="score-text" v-html="highestScore"></div>
       <div class="score-label">Score</div>
       <div class="score-text" v-html="score"></div>
     </div>
@@ -34,6 +36,7 @@ import Ball from './Ball.vue'
 export default class Game extends Vue {
   public ballOption: BallOption | null = null
   public score: number = 0
+  public highestScore: number = 0
   public initLevel: Level = {
     duration: 1,
     pointDuration: 1.5,
@@ -55,7 +58,6 @@ export default class Game extends Vue {
   }
 
   public start() {
-    console.log('Start')
     this.isDead = false
     this.score = 0
     this.setRandomBallWithLevel()
@@ -84,13 +86,33 @@ export default class Game extends Vue {
     this.setRandomBall(duration, pointDuration)
   }
 
+  public setHighestScore(score: number) {
+    this.highestScore = score
+    window.localStorage.setItem('highestScore', score.toString())
+    window.localStorage.setItem('timestamp', `${new Date().getTime()}`)
+  }
+
+  public getHighestScore(): number {
+    const localScore = window.localStorage.getItem('highestScore')
+    const score = localScore ? parseInt(localScore, 10) : this.score
+    this.highestScore = score
+    return score
+  }
+
   public handleBallCompleted(isScored: boolean) {
     if (isScored) {
       this.score ++
       this.setRandomBallWithLevel()
     } else {
       this.isDead = true
+      if (this.score > this.highestScore) {
+        this.setHighestScore(this.score)
+      }
     }
+  }
+
+  public mounted() {
+    this.getHighestScore()
   }
 
   // @Watch('score')
