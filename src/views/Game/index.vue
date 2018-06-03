@@ -28,6 +28,8 @@ import { BallOption, Level } from '@/types'
 import { randomWithRange } from '@/util'
 import Ball from './Ball.vue'
 import { GameApi } from '@/api'
+const standardRange: number = 5
+
 
 @Component({
   components: {
@@ -46,7 +48,7 @@ export default class Game extends Vue {
   public isNewHScore: boolean = false
 
   get levelNumber(): number {
-    return this.score / 10
+    return this.score / standardRange
   }
 
   get level(): Level {
