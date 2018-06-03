@@ -27,6 +27,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { BallOption, Level } from '@/types'
 import { randomWithRange } from '@/util'
 import Ball from './Ball.vue'
+import { GameApi } from '@/api'
 
 @Component({
   components: {
@@ -42,6 +43,7 @@ export default class Game extends Vue {
     pointDuration: 1.5,
   }
   public isDead: boolean = false
+  public isNewHScore: boolean = false
 
   get levelNumber(): number {
     return this.score / 10
@@ -59,6 +61,7 @@ export default class Game extends Vue {
 
   public start() {
     this.isDead = false
+    this.isNewHScore = false
     this.score = 0
     this.setRandomBallWithLevel()
   }
@@ -90,6 +93,8 @@ export default class Game extends Vue {
     this.highestScore = score
     window.localStorage.setItem('highestScore', score.toString())
     window.localStorage.setItem('timestamp', `${new Date().getTime()}`)
+    const gameApi = new GameApi('RoySung')
+    gameApi.setScore(score).then(res => console.log(res))
   }
 
   public getHighestScore(): number {
@@ -106,6 +111,7 @@ export default class Game extends Vue {
     } else {
       this.isDead = true
       if (this.score > this.highestScore) {
+        this.isNewHScore = true
         this.setHighestScore(this.score)
       }
     }
