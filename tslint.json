@@ -1,8 +1,7 @@
 {
   "defaultSeverity": "warning",
   "extends": [
-    "tslint:recommended",
-    "tslint-config-standard"
+    "tslint:recommended"
   ],
   "rules": {
     "quotemark": [true, "single"],
