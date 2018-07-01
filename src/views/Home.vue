@@ -23,23 +23,29 @@ import { Component, Vue } from 'vue-property-decorator'
   },
 })
 export default class Home extends Vue {}
+
+// add effect
+// $(function(){
+//   $(".game span").hover(function(){
+//     $(".home").css("filter"," grayscale(0)");
+//   });
+// });
+
+
+
 </script>
 <style lang="scss">
+@font-face {
+  font-family: Teko;
+  src: url(../fonts/Teko-Bold.ttf);
+
+}
 
   a{
     text-decoration: none;
+    font-family: Teko !important;
   }
 
-  #nav {
-    padding: 30px;
-    a {
-      font-weight: bold;
-      color: #2c3e50;
-      &.router-link-exact-active {
-        color: #42b983;
-      }
-    }
-  }
 
   .home{
     background: url(../assets/bgImg.jpg) no-repeat;
@@ -48,6 +54,10 @@ export default class Home extends Vue {}
     background-position: center center;
     height: 100vh;
     filter: grayscale(0.8);
+    transition: 1s;
+    // &:hover{
+    //   filter: grayscale(0);
+    // }
   }
 
   .game{
@@ -72,6 +82,9 @@ export default class Home extends Vue {}
           a{
             transform: none;
           }
+          // .home{
+          //   filter: grayscale(0);
+          // }
         }
         &::before{
           content: "";
@@ -99,7 +112,7 @@ export default class Home extends Vue {}
            color: #fff;
            transform: rotate(-40deg);
            transition-duration: 0.4s;
-           
+           text-transform: uppercase;
            padding: 50px;
            &:hover{
              
