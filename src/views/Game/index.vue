@@ -1,24 +1,30 @@
 <template>
   <div class="game-wrap">
-    <div class="score-wrap">
-      <div class="score-label">Highest Score</div>
-      <div class="score-text" v-html="highestScore"></div>
-      <div class="score-label">Score</div>
-      <div class="score-text" v-html="score"></div>
+    <div v-if="!ballOption || isDead" class="scoreboard">
+      <div class="score-wrap">
+        <div class="score-wrap__now-score">
+          <div class="score-label">Now Score</div>
+          <div class="score-text" v-html="twoDigit(score)"></div>
+        </div>
+        <div class="score-wrap__high-score">
+          <div class="score-label">High Score</div>
+          <div class="score-text" v-html="twoDigit(highestScore)"></div>
+        </div>
+      </div>
+      <button
+        class="menu-btn"
+        @click="start"
+        v-html="startText">
+      </button>
+      <button
+        class="menu-btn">
+        Rank
+      </button>
     </div>
-    <button
-      v-if="!ballOption"
-      class="start-btn"
-      @click="start">
-      Start
-    </button>
     <Ball
       v-if="ballOption && !isDead"
       :option="ballOption"
       @completed="handleBallCompleted"/>
-    <div v-if="this.isDead" class="result-wrap">
-      <button class="restart-btn" @click="start">Restart</button>
-    </div>
   </div>
 </template>
 
@@ -59,6 +65,10 @@ export default class Game extends Vue {
       duration,
       pointDuration,
     }
+  }
+
+  get startText(): string {
+    return this.isDead ? 'Restart' : 'Start'
   }
 
   public start() {
@@ -116,6 +126,14 @@ export default class Game extends Vue {
         this.isNewHScore = true
         this.setHighestScore(this.score)
       }
+    }
+  }
+
+  public twoDigit(n: number): string {
+    if (n < 10) {
+      return `0${n}`
+    } else {
+      return n.toString()
     }
   }
 

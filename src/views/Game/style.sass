@@ -1,28 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Teko')
+$yellow: #fbbf26
+
+*
+  font-family: 'Teko', sans-serif
 .game-wrap
   width: 100vw
   height: 100vh
   background-position: center center
   background-image: url(https://images.pexels.com/photos/399187/pexels-photo-399187.jpeg?cs=srgb&dl=evening-field-football-field-399187.jpg&fm=jpg)
-  .score-wrap
-    color: #fff
-    .score-label
-      font-size: 50px
-      font-weight: bold
-    .score-text
-      font-size: 35px
-  .start-btn
+  .scoreboard
     position: fixed
     top: 50%
     left: 50%
+    transform: translate(-50%, -50%)
+    width: 50%
+  .score-wrap
+    display: flex
+    color: #fff
+    width: 100%
+    &__now-score,
+    &__high-score
+      flex: 1
+    &__high-score
+      .score-text
+        color: $yellow
+    .score-label
+      font-size: 40px
+      font-weight: bolder
+      text-transform: uppercase
+    .score-text
+      font-size: 180px
+      font-weight: bolder
+  .menu-btn
     width: 150px
     height: 50px
-    transform: translate(-50%, -50%)
+    margin: 0 15px
     border-radius: 30px
+    border: unset
     font-size: 20px
-    text-transform: uppercase
     font-weight: bold
+    text-transform: uppercase
     color: #fff
-    background: transparent
+    background: #000
     cursor: pointer
     &:hover
       background: #ffffff
