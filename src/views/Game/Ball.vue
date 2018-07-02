@@ -7,7 +7,7 @@
     <img
       ref="ballImg"
       :class="{ 'is-point': isPoint, 'is-scored': isScored }"
-      src="http://pngimg.com/uploads/football/football_PNG1091.png" alt="">
+      src="@/assets/football.png" alt="">
   </div>
 </template>
 
