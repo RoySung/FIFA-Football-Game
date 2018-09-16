@@ -14,3 +14,8 @@ export interface Level {
   duration: number
   pointDuration: number
 }
+
+export interface ScoreData {
+  playerName: string
+  score: number
+}

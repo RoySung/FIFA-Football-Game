@@ -1,36 +1,56 @@
 <template>
   <div class="game-wrap">
-    <div v-if="!ballOption || isDead" class="scoreboard">
-      <div class="score-wrap">
-        <div class="score-wrap__now-score">
-          <div class="score-label">Now Score</div>
-          <div class="score-text" v-html="twoDigit(score)"></div>
+    <template v-if="!isRank">
+      <div v-if="!ballOption || isDead" class="scoreboard">
+        <div class="score-wrap">
+          <div class="score-wrap__now-score">
+            <div class="score-label">Now Score</div>
+            <div class="score-text" v-html="twoDigit(score)"></div>
+          </div>
+          <div class="score-wrap__high-score">
+            <div class="score-label">High Score</div>
+            <div class="score-text" v-html="twoDigit(highestScore)"></div>
+          </div>
         </div>
-        <div class="score-wrap__high-score">
-          <div class="score-label">High Score</div>
-          <div class="score-text" v-html="twoDigit(highestScore)"></div>
-        </div>
+        <button
+          class="menu-btn"
+          @click="start"
+          v-html="startText">
+        </button>
+        <button
+          class="menu-btn"
+          @click="isRank = true">
+          Rank
+        </button>
       </div>
-      <button
-        class="menu-btn"
-        @click="start"
-        v-html="startText">
-      </button>
-      <button
-        class="menu-btn">
-        Rank
-      </button>
+      <Ball
+        v-if="ballOption && !isDead"
+        :option="ballOption"
+        @completed="handleBallCompleted"/>
+    </template>
+    <div v-else class="rank-wrap">
+      <div class="rank-wrap__board">
+        <h1 class="rank-wrap__board__title">Rank</h1>
+        <ul class="rank-list">
+          <li class="rank-item" v-for="(scroeData, index) in rankArr" :key="`${scroeData.playerName}-${scroeData.score}-${index}`">
+            <div class="rank-item__name" v-html="scroeData.playerName"></div>
+            <div class="rank-item__name" v-html="scroeData.score"></div>
+          </li>
+        </ul>
+        <button
+          v-if="isRank"
+          class="menu-btn rank-wrap__back-btn"
+          @click="isRank = false">
+          Back
+        </button>
+      </div>
     </div>
-    <Ball
-      v-if="ballOption && !isDead"
-      :option="ballOption"
-      @completed="handleBallCompleted"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { BallOption, Level } from '@/types'
+import { BallOption, Level, ScoreData } from '@/types'
 import { randomWithRange } from '@/util'
 import Ball from './Ball.vue'
 import { GameApi } from '@/api'
@@ -52,6 +72,9 @@ export default class Game extends Vue {
   }
   public isDead: boolean = false
   public isNewHScore: boolean = false
+  public isRank: boolean = false
+  public rankArr: ScoreData[] = []
+  public gameData: GameApi = new GameApi()
 
   get levelNumber(): number {
     return this.score / standardRange
@@ -105,8 +128,7 @@ export default class Game extends Vue {
     this.highestScore = score
     window.localStorage.setItem('highestScore', score.toString())
     window.localStorage.setItem('timestamp', `${new Date().getTime()}`)
-    const gameApi = new GameApi('RoySung')
-    gameApi.setScore(score).then(res => console.log(res))
+    this.gameData.setScore(score).then(res => console.log(res))
   }
 
   public getHighestScore(): number {
@@ -137,8 +159,17 @@ export default class Game extends Vue {
     }
   }
 
+  public async fetchRankArr() {
+    try {
+      this.rankArr = await this.gameData.getScores()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   public mounted() {
     this.getHighestScore()
+    this.fetchRankArr()
   }
 
   // @Watch('score')

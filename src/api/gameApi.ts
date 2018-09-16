@@ -1,14 +1,14 @@
-interface Score {
-  playerName: string
-  score: number
-}
-
-class GameApi implements Score {
+import { ScoreData } from '@/types'
+class GameApi implements ScoreData {
   public playerName: string
   public score: number
-  constructor(playerName: string) {
+  constructor(playerName: string = '') {
     this.playerName = playerName
     this.score = 0
+  }
+
+  public setPlayerName(playerName: string) {
+    this.playerName = playerName
   }
 
   public setScore(score: number) {
@@ -28,7 +28,7 @@ class GameApi implements Score {
     })
   }
 
-  public getScores(limitToLast = 10) {
+  public getScores(limitToLast = 10): Promise<ScoreData[]> {
     return new Promise((resolve, reject) => {
       const url = new URL('https://fifa-football-game.firebaseio.com/scores.json')
       url.searchParams.set('orderBy', '"score"')
@@ -36,10 +36,19 @@ class GameApi implements Score {
       fetch(url.href, {
         method: 'GET',
       })
-        .then(res => resolve(res.json()))
-        .catch(e => reject(e))
+      .then(res => res.json())
+      .then(result => {
+        const arr: ScoreData[] = Object.keys(result).reduce((acc: ScoreData[], key) => {
+          const obj: ScoreData = result[key]
+          acc.push(obj)
+          return acc
+        }, []).sort((a: ScoreData, b: ScoreData): number => b.score - a.score)
+        resolve(arr)
+      })
+      .catch(e => reject(e))
     })
   }
+
 }
 
 export default GameApi
